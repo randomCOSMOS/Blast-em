@@ -1,4 +1,4 @@
-class Scene2 extends Phaser.Scene {
+    class Scene2 extends Phaser.Scene {
     constructor() {
         super('main')
     }
@@ -49,7 +49,6 @@ class Scene2 extends Phaser.Scene {
     }
 
     pickPowerUp(player, powerUp) {
-        // powerUp.disableBody(true, true);
         powerUp.destroy();
     }
 
@@ -59,9 +58,13 @@ class Scene2 extends Phaser.Scene {
         player.y = CONFIG.height - 64;
     }
 
-    hitEnemy(projectile, enemy){
+    hitEnemy(projectile, enemy) {
         projectile.destroy();
+        enemy.setTexture('explosion');
+        enemy.play('explode');
         this.resetShip(enemy);
+        this.score += 15;
+        this.scoreLabel.text = 'SCORE: ' + this.score;
     }
 
     create() {
@@ -110,6 +113,14 @@ class Scene2 extends Phaser.Scene {
 
         // projectiles
         this.projectiles = this.add.group();
+
+        // font
+        let graphics = this.add.graphics();
+        graphics.fillStyle('Black');
+        graphics.fillRect(0, 0, CONFIG.width, 20);
+
+        this.score = 0;
+        this.scoreLabel = this.add.bitmapText(10, 5, 'pixelFont', 'SCORE: 0', 16);
 
         // interaction
         this.ship.setInteractive();
